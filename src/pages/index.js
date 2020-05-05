@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FaGithub, FaSpotify, FaLinkedin } from 'react-icons/fa'
-import { graphql } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
 import $ from 'jquery'
 
 import Img from 'gatsby-image'
 import Link from '../components/Link.js'
 import bballImg from '../images/bball.png'
-import atitlanImg from '../images/atitlan.jpg'
 
 import './index.css'
 
@@ -16,6 +15,18 @@ const IndexPage = () => {
     const [tooltipMessage, setTooltipMessage] = useState('copy to clipboard')
 
     const emailRef = useRef()
+
+    const data = useStaticQuery(graphql`
+        query Images {
+            atitlanImg: file(relativePath: { eq: "atitlan.jpg" }) {
+                childImageSharp {
+                    fluid {
+                        ...GatsbyImageSharpFluid
+                    }
+                }
+            }
+        }
+    `)
 
     useEffect(() => {
         generateColors()
@@ -36,9 +47,7 @@ const IndexPage = () => {
 
     const displayAtitlanBackground = () => {
         $('.name-section').addClass('name-section-atitlan-bg')
-        $('.name-section-atitlan-bg').css({
-            'background-image': `url(${atitlanImg})`,
-        })
+        $('.hero-image').removeClass('hidden')
         $('.links').removeClass('hidden')
     }
 
@@ -149,24 +158,20 @@ const IndexPage = () => {
                     backgroundPositionY: offset / 1.8,
                 }}
             >
+                <Img
+                    className="hero-image hidden"
+                    fluid={data.atitlanImg.childImageSharp.fluid}
+                    imgStyle={{ objectPosition: 'top' }}
+                />
                 <nav className="links hidden">
-                    <Link
-                        href="github.com/christopherchateau"
-                        linkClasses={['fab', 'slide', 'fa-github']}
-                    >
-                        <FaGithub />
+                    <Link href="github.com/christopherchateau">
+                        <FaGithub className="fa-github" />
                     </Link>
-                    <Link
-                        href="linkedin.com/in/christopherchateau/"
-                        linkClasses={['fab', 'slide', 'fa-linkedin']}
-                    >
-                        <FaLinkedin />
+                    <Link href="linkedin.com/in/christopherchateau/">
+                        <FaLinkedin className="fa-linkedin" />
                     </Link>
-                    <Link
-                        href="open.spotify.com/user/22sqnzcvx3svvhpsxhlzodhji?si=qtjIs9klT-erRFdTIQR4TA"
-                        linkClasses={['fab', 'slide', 'fa-spotify']}
-                    >
-                        <FaSpotify />
+                    <Link href="open.spotify.com/user/22sqnzcvx3svvhpsxhlzodhji?si=qtjIs9klT-erRFdTIQR4TA">
+                        <FaSpotify className="fa-spotify" />
                     </Link>
                 </nav>
                 <div
