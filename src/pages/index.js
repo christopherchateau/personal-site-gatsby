@@ -51,11 +51,14 @@ const IndexPage = () => {
         $('.links').removeClass('hidden')
     }
 
-    const anchorLinks = () =>
+    const anchorLinks = () => {
         $(window).scrollTop() > window.innerHeight * 0.9 &&
         window.innerWidth > 970
             ? $('.links').addClass('anchor-links')
             : $('.links').removeClass('anchor-links')
+
+        $('.links').css({ top: `${window.innerHeight * 0.9}` })
+    }
 
     const updatePageOffset = () => setOffset(window.pageYOffset)
 
